@@ -49,7 +49,10 @@ void toCv(const pcl::RangeImagePlanar& range_image,
   cv_image = cv::Mat(range_image.height, range_image.width, CV_32FC1, cv::Scalar(std::numeric_limits<float>::max()));
 
   for (size_t i = 0; i < range_image.size(); ++i){
-    cv_image.at<float>(i) = range_image[i].range;
+    // Invalid values in range image have -inf
+    if (range_image[i].range > 0.0){
+      cv_image.at<float>(i) = range_image[i].range;
+    }
   }
 
 }
