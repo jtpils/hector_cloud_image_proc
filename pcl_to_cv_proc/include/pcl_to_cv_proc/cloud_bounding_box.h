@@ -31,12 +31,14 @@
 #ifndef CLOUD_BOUNDING_BOX_H___
 #define CLOUD_BOUNDING_BOX_H___
 
+#include "opencv2/core/version.hpp"
 
 // Upper part verified with cv 2.4, lower with 3.x
 // Needs testing if the 3.x include also works on indigo
 #if CV_MAJOR_VERSION == 2
   #include <opencv/cv.h>
 #elif CV_MAJOR_VERSION == 3
+  #include <opencv2/core.hpp>
   #include <opencv2/imgproc/imgproc.hpp>
 #endif
 
