@@ -38,6 +38,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 
 #include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <geometry_msgs/Pose.h>
 
 namespace pcl_to_cv_proc{
