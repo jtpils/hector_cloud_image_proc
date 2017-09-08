@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch> 
+  
+  <!-- Accumulated pointcloud -->
+ <node pkg="vigir_cloud_to_planar_scan" type="periodic_cloud_aggregator_node" name="point_cloud_aggregator" output="screen" ns="/spin_laser">
+    <remap from="cloud" to="vlp16"/>
+    <remap from="cloud_out" to="vlp16_agg"/> 
+    <param name="target_frame" value="rear_chassis_cam_optical_frame"/>
+    <param name="publish_frequency_hz" value="0.1"/>
+  </node>    
+  
+  <!-- Start calibration -->
+  <node pkg="hector_scan_to_intensity_img" type="scan_to_intensity_img_node" name="scan_to_intensity_image" output="screen" ns="/spin_laser">
+<!--     <param name="base_frame" value="base_link"/> -->
+    <param name="min_distance" value="0" />
+    <param name="sensor_noise" value="0.05" />
+    <remap from="cloud" to="vlp16_agg" />
+  </node>
+</launch>
