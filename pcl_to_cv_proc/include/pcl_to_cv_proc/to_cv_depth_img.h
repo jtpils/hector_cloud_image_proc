@@ -43,11 +43,9 @@
 
 namespace pcl_to_cv_proc{
 
-void toCv(const pcl::RangeImagePlanar& range_image,
-          cv::Mat& cv_image)
-{
+void toCv(const pcl::RangeImagePlanar& range_image, cv::Mat& cv_image) {
 
-  cv_image = cv::Mat(range_image.height, range_image.width, CV_32FC1, cv::Scalar(std::numeric_limits<float>::max()));
+  cv_image = cv::Mat(range_image.height, range_image.width, CV_32FC1, cv::Scalar::all(NAN));
 
   for (size_t i = 0; i < range_image.size(); ++i){
     // Invalid values in range image have -inf
@@ -68,11 +66,17 @@ bool generateDepthImage(const pcl::PointCloud<PointT>& cloud,
   // We use camera info here as it allows for potentially
   // easier use with camera type sensors in the future
   sensor_msgs::CameraInfo camera_info;
-  camera_info.width = 50;
+  camera_info.width = 600;
   camera_info.height = camera_info.width;
   camera_info.K[0] = camera_info.width;
   camera_info.K[4] = camera_info.K[0];
+  camera_info.P[0] = camera_info.K[0];
+  camera_info.P[5] = camera_info.K[4];
 
+  camera_info.K[2] = camera_info.width / 2;
+  camera_info.K[5] = camera_info.height / 2;
+  camera_info.P[2] = camera_info.K[2];
+  camera_info.P[6] = camera_info.K[5];
 
   range_image.createFromPointCloudWithFixedSize( cloud,
                                                  static_cast<int>(camera_info.width),
@@ -85,8 +89,6 @@ bool generateDepthImage(const pcl::PointCloud<PointT>& cloud,
                                                  pcl::RangeImage::LASER_FRAME);
 
   toCv(range_image, out);
-
-  //range_img.createFromPointCloudWithFixedSize
   return true;
 }
 

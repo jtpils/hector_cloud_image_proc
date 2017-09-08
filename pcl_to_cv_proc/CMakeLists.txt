@@ -19,11 +19,19 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV REQUIRED)
 find_package(PCL REQUIRED)
 
-#
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES #to_cv_depth_img
-  CATKIN_DEPENDS   cv_bridge eigen_conversions geometry_msgs image_geometry pcl_ros roscpp sensor_msgs tf tf_conversions
+  LIBRARIES pcl_to_cv_proc
+  CATKIN_DEPENDS
+    cv_bridge
+    eigen_conversions
+    geometry_msgs
+    image_geometry
+    pcl_ros
+    roscpp
+    sensor_msgs
+    tf
+    tf_conversions
 #  DEPENDS system_lib
 )
 
@@ -33,8 +41,13 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
 )
 
-#add_library(to_cv_depth_img src/to_cv_depth_img.cpp)
-#target_link_libraries(to_cv_depth_img ${catkin_LIBRARIES})
+add_library(${PROJECT_NAME}
+  include/${PROJECT_NAME}/to_cv_depth_img.h
+  src/to_cv_depth_img.cpp
+  include/${PROJECT_NAME}/to_cv_intensity_img.h
+  src/to_cv_intensity_img.cpp)
+add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #install(TARGETS to_cv_depth_img
 #  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
