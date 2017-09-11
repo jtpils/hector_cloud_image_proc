@@ -18,6 +18,10 @@ double pcl_norm(const PointT& point) {
   return std::sqrt(std::pow(point.x, 2) + std::pow(point.y, 2) + std::pow(point.z, 2));
 }
 
+bool isInImage(int width, int height, int x, int y) {
+  return x > 0 && y > 0 && x < width && y < height;
+}
+
 
 bool generateIntensityImage(const pcl::PointCloud<pcl::PointXYZI>& cloud_in, const Eigen::Affine3d& camera_pose, cv::Mat& img_out, double sensor_noise = 0.0, double min_distance = 0.0);
 

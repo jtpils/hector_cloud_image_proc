@@ -12,7 +12,7 @@
   <!-- Start calibration -->
   <node pkg="hector_scan_to_intensity_img" type="scan_to_intensity_img_node" name="scan_to_intensity_image" output="screen" ns="/spin_laser">
 <!--     <param name="base_frame" value="base_link"/> -->
-    <param name="min_distance" value="0" />
+    <param name="min_distance" value="0.2" />
     <param name="sensor_noise" value="0.05" />
     <remap from="cloud" to="vlp16_agg" />
   </node>
