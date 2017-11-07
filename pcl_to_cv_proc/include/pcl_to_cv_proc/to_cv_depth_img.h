@@ -86,7 +86,7 @@ bool generateDepthImage(const pcl::PointCloud<PointT>& cloud,
                                                  static_cast<float>(camera_info.K[0]),
                                                  static_cast<float>(camera_info.K[4]),
                                                  camera_pose.cast<float>(),
-                                                 pcl::RangeImage::LASER_FRAME);
+                                                 pcl::RangeImage::CAMERA_FRAME);
 
   toCv(range_image, out);
   return true;

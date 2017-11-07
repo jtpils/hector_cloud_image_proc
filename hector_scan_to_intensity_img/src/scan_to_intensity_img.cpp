@@ -35,14 +35,17 @@ void ScanToIntensityImg::pointCloudCb(const sensor_msgs::PointCloud2ConstPtr &cl
 
 
   cv_bridge::CvImage cv_image;
-  cv_image.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+
   cv_image.header.stamp = cloud_ptr->header.stamp;
   cv_image.header.frame_id = cloud_ptr->header.frame_id;
 
   cv_image.image = generateIntensityImage(pcl_cloud);
+  cv_image.encoding = sensor_msgs::image_encodings::TYPE_8UC1;
+//  cv_image.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
   image_pub_.publish(cv_image.toImageMsg());
 
   cv_image.image = generateDepthImage(pcl_cloud);
+  cv_image.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
   depth_image_pub_.publish(cv_image.toImageMsg());
 }
 
@@ -53,7 +56,7 @@ cv::Mat ScanToIntensityImg::generateIntensityImage(const pcl::PointCloud<pcl::Po
   ROS_INFO_STREAM("Publishing intensity image with shape: " << intensity_img.cols << "x" << intensity_img.rows);
   double min, max;
   cv::minMaxLoc(intensity_img, &min, &max);
-  ROS_INFO_STREAM("Max: " << max << ", Min: " << min);
+  ROS_INFO_STREAM("Min: " << min << ", Max: " << max);
   return intensity_img;
 }
 
@@ -65,7 +68,7 @@ cv::Mat ScanToIntensityImg::generateDepthImage(const pcl::PointCloud<pcl::PointX
   ROS_INFO_STREAM("Publishing depth image with shape: " << depth_image.cols << "x" << depth_image.rows);
   double min, max;
   cv::minMaxLoc(depth_image, &min, &max);
-  ROS_INFO_STREAM("Max: " << max << ", Min: " << min);
+  ROS_INFO_STREAM("Min: " << min << ", Max: " << max);
   return depth_image;
 }
 

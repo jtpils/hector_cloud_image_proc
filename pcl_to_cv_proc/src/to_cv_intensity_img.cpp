@@ -25,7 +25,7 @@ bool generateIntensityImage(const pcl::PointCloud<pcl::PointXYZI>& cloud_in, con
   std::vector<int> counter(camera_info.width * camera_info.height, 0);
   std::vector<double> ranges(camera_info.width * camera_info.height, std::numeric_limits<double>::infinity());
 
-  img_out = cv::Mat(camera_info.height, camera_info.width, CV_32FC1, cv::Scalar::all(0.0));
+  img_out = cv::Mat(camera_info.height, camera_info.width, CV_32FC1, cv::Scalar::all(-1));
 
   // Iterate over every point in cloud and project to image plane
   for (unsigned int i = 0; i < cloud_in.size(); i++) {
@@ -101,6 +101,15 @@ bool generateIntensityImage(const pcl::PointCloud<pcl::PointXYZI>& cloud_in, con
 //      img_out.at<float>(pixel_y, pixel_x) += (range - img_out.at<float>(pixel_y, pixel_x))/counter[pixel_idx];
     }
   }
+
+  cv::Mat inpainting_mask(camera_info.height, camera_info.width, CV_8UC1, cv::Scalar::all(0));
+  inpainting_mask.setTo(1, img_out < 0);
+  double min, max;
+  cv::minMaxLoc(img_out, &min, &max);
+  img_out.convertTo(img_out, CV_8UC1, 255.0/max);
+  cv::inpaint(img_out, inpainting_mask, img_out, 10, cv::INPAINT_NS);
+//  cv::imshow("image", img_out);
+//  cv::waitKey(1);
 }
 
 }

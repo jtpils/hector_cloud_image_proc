@@ -5,6 +5,8 @@
 
 #include <opencv/cv.h>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/photo/photo.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <sensor_msgs/CameraInfo.h>
 
